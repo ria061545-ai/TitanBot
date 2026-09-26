@@ -22,7 +22,7 @@ export const MUSIC_BUTTON_IDS = {
 
 export function formatDuration(ms) {
     if (!ms || Number.isNaN(ms)) {
-        return 'Live';
+        return 'مباشر';
     }
     const totalSeconds = Math.floor(ms / 1000);
     const hours = Math.floor(totalSeconds / 3600);
@@ -40,12 +40,12 @@ function getTrackArtwork(track) {
 
 function getLoopLabel(loop) {
     switch (loop) {
-        case 'track':
-            return 'Track';
-        case 'queue':
-            return 'Queue';
+        case 'مسار':
+            return 'مقطع';
+        case 'طابور':
+            return 'قائمة الانتظار';
         default:
-            return 'Off';
+            return 'معطل';
     }
 }
 
@@ -53,22 +53,22 @@ export function buildNowPlayingEmbed(track, player, guildData) {
     const requester = track?.info?.requester;
     const requesterLabel = requester
         ? (requester.username || requester.tag || 'Unknown')
-        : 'Unknown';
+        : 'مجهول';
 
     const position = formatDuration(player?.position || 0);
     const duration = formatDuration(track?.info?.length || 0);
 
     return createEmbed({
-        title: 'Now Playing',
+        title: 'جاري التشغيل الآن',
         description: track?.info?.title || 'Unknown track',
         color: 'primary',
         fields: [
-            { name: 'Artist', value: track?.info?.author || 'Unknown', inline: true },
-            { name: 'Requester', value: requesterLabel, inline: true },
-            { name: 'Progress', value: `${position} / ${duration}`, inline: true },
-            { name: 'Volume', value: `${guildData?.volume ?? 75}%`, inline: true },
-            { name: 'Loop', value: getLoopLabel(guildData?.loop), inline: true },
-            { name: 'Queue', value: `${player?.queue?.length || 0} track(s)`, inline: true },
+            { name: 'الفنان', value: track?.info?.author || 'Unknown', inline: true },
+            { name: 'بطلب من', value: requesterLabel, inline: true },
+            { name: 'التقدم', value: `${position} / ${duration}`, inline: true },
+            { name: 'مستوى الصوت', value: `${guildData?.volume ?? 75}%`, inline: true },
+            { name: 'التكرار', value: getLoopLabel(guildData?.loop), inline: true },
+            { name: 'قائمة الانتظار', value: `${player?.queue?.length || 0} track(s)`, inline: true },
         ],
         thumbnail: getTrackArtwork(track),
         footer: player?.paused ? 'Paused' : 'Playing',
