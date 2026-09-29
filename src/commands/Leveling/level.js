@@ -21,14 +21,14 @@ export default {
                 .addChannelOption((option) =>
                     option
                         .setName('channel')
-                        .setDescription('Channel to send level-up notifications in')
+                        .setDescription('القناة المخصصة لإرسال إشعارات الترقية')
                         .addChannelTypes(ChannelType.GuildText)
                         .setRequired(true),
                 )
                 .addIntegerOption((option) =>
                     option
                         .setName('xp_min')
-                        .setDescription('Minimum XP awarded per message (default: 15)')
+                        .setDescription('أدنى حد للخبرة لكل رسالة (الافتراضي: 15)')
                         .setMinValue(1)
                         .setMaxValue(500)
                         .setRequired(false),
@@ -36,7 +36,7 @@ export default {
                 .addIntegerOption((option) =>
                     option
                         .setName('xp_max')
-                        .setDescription('Maximum XP awarded per message (default: 25)')
+                        .setDescription('أقصى حد للخبرة لكل رسالة (الافتراضي: 25)')
                         .setMinValue(1)
                         .setMaxValue(500)
                         .setRequired(false),
