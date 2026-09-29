@@ -41,25 +41,25 @@ export const helpBugReportButton = {
     name: BUG_REPORT_BUTTON_ID,
     async execute(interaction, client) {
         const githubButton = new ButtonBuilder()
-            .setLabel('🐛 Report Bug on GitHub')
+            .setLabel('🐛 الإبلاغ عن مشكلة على GitHub')
             .setStyle(ButtonStyle.Link)
             .setURL('https://github.com/codebymitch/TitanBot/issues');
 
         const bugRow = new ActionRowBuilder().addComponents(githubButton);
 
         const bugReportEmbed = createEmbed({
-            title: '🐛 Bug Report',
-            description: 'Found a bug? Please report it on our GitHub Issues page!\n\n' +
-                '**When reporting a bug, please include:**\n' +
-                '• 📝 Detailed description of the issue\n' +
-                '• 📋 Steps to reproduce the problem\n' +
-                '• 📸 Screenshots if applicable\n' +
-                '• 💻 Your bot version and environment\n\n' +
-                'This helps us fix issues faster and more effectively!',
+            title: '🐛 الإبلاغ عن مشكلة (Bug Report)',
+            description: 'هل واجهت مشكلة أو خطأ برمجي؟ يرجى الإبلاغ عنها عبر صفحة المشاكل الخاصة بنا على GitHub!\n\n' +
+                '**عند الإبلاغ عن مشكلة، يرجى تضمين ما يلي:**\n' +
+                '• 📝 وصف تفصيلي للمشكلة\n' +
+                '• 📋 خطوات إعادة تكرار المشكلة\n' +
+                '• 📸 صور لشاشة العرض إن أمكن\n' +
+                '• 💻 إصدار البوت وبيئة التشغيل\n\n' +
+                'هذا يساعدنا على إصلاح المشاكل بسرعة وبشكل أكثر فاعلية!',
             color: 'error'
         });
         bugReportEmbed.setFooter({
-            text: 'TitanBot Bug Reporting System',
+            text: 'نظام الإبلاغ عن أخطاء تيتان بوت',
             iconURL: client.user.displayAvatarURL()
         });
         bugReportEmbed.setTimestamp();
@@ -77,7 +77,8 @@ function getPaginationInfo(components) {
         for (const component of row.components || []) {
             if (component.customId === `${PAGINATION_PREFIX}_page`) {
                 const label = component.label || '';
-                const match = label.match(/Page\s+(\d+)\s+of\s+(\d+)/i);
+                // مطابقة نمط الصفحات بالعربية أو الإنجليزية (صفحة X من Y أو Page X of Y)
+                const match = label.match(/(?:صفحة|Page)\s+(\d+)\s+(?:من|of)\s+(\d+)/i);
                 if (match) {
                     return {
                         currentPage: Number(match[1]),
