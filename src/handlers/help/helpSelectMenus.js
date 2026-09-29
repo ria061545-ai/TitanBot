@@ -14,9 +14,32 @@ const BACK_BUTTON_ID = "help-back-to-main";
 const ALL_COMMANDS_ID = "help-all-commands";
 const PAGINATION_PREFIX = "help-page";
 const CATEGORY_SELECT_ID = "help-category-select";
-const FOOTER_TEXT = "Made with ❤️";
+const FOOTER_TEXT = "تم التطوير بـ ❤️";
 const SUBCOMMAND_TYPE = 1;
 const SUBCOMMAND_GROUP_TYPE = 2;
+
+// ترجمة وأيقونات الأقسام
+const CATEGORY_TRANSLATIONS = {
+    Core: "الأساسية",
+    Moderation: "الإشراف والرقابة",
+    Economy: "الاقتصاد",
+    Music: "الموسيقى",
+    Fun: "الترفيه",
+    Leveling: "المستويات",
+    Utility: "الأدوات العامة",
+    Ticket: "التذاكر",
+    Welcome: "الترحيب",
+    Giveaway: "القت القرع والمسابقات",
+    Counter: "العداد",
+    Tools: "الأدوات المتقدمة",
+    Search: "البحث",
+    "Reaction Roles": "رتب التفاعل",
+    Community: "المجتمع",
+    Birthday: "أعياد الميلاد",
+    "Join To Create": "إنشاء الرومات الصوتية",
+    Verification: "التحقق والتوثيق",
+    Config: "الإعدادات",
+};
 
 const CATEGORY_ICONS = {
     Core: "ℹ️",
@@ -41,10 +64,12 @@ const CATEGORY_ICONS = {
 };
 
 function formatCategoryName(rawCategory) {
-    return rawCategory
+    const formatted = rawCategory
         .replace(/_/g, ' ')
         .replace(/([a-z])([A-Z])/g, '$1 $2')
         .replace(/\b\w/g, (char) => char.toUpperCase());
+
+    return CATEGORY_TRANSLATIONS[formatted] || formatted;
 }
 
 function buildHelpEntries(command, category) {
@@ -54,7 +79,7 @@ function buildHelpEntries(command, category) {
     }
 
     const baseName = commandData.name;
-    const baseDescription = commandData.description || "No description";
+    const baseDescription = commandData.description || "لا يوجد وصف";
     const options = commandData.options || [];
 
     const entries = [];
@@ -122,7 +147,7 @@ function normalizeCommandData(command) {
 
 async function createCategoryCommandsMenu(category, client) {
     const categoryName = formatCategoryName(category);
-    const icon = CATEGORY_ICONS[categoryName] || "🔍";
+    const icon = CATEGORY_ICONS[category] || CATEGORY_ICONS[categoryName] || "🔍";
 
     const categoryCommands = [];
 
@@ -170,10 +195,10 @@ async function createCategoryCommandsMenu(category, client) {
     }
 
     const embed = createEmbed({
-        title: `${icon} ${categoryName} Commands`,
+        title: `${icon} أوامر قسم ${categoryName}`,
         description: categoryCommands.length > 0
-            ? `Click any command mention below to use it.`
-            : `No commands found in the **${categoryName}** category.`
+            ? `اضغط على أي أمر أدناه لاستخدامه مباشرة.`
+            : `لا توجد أوامر متوفرة في قسم **${categoryName}** حالياً.`
     });
 
     if (categoryCommands.length > 0) {
@@ -190,7 +215,7 @@ async function createCategoryCommandsMenu(category, client) {
         const maxLength = 1000;
         if (commandMentions.length <= maxLength) {
             embed.addFields({
-                name: "Commands",
+                name: "الأوامر",
                 value: commandMentions,
                 inline: false,
             });
@@ -211,7 +236,7 @@ async function createCategoryCommandsMenu(category, client) {
 
             chunks.forEach((chunk, index) => {
                 embed.addFields({
-                    name: `Commands (Part ${index + 1})`,
+                    name: `الأوامر (الجزء ${index + 1})`,
                     value: chunk,
                     inline: false,
                 });
@@ -224,7 +249,7 @@ async function createCategoryCommandsMenu(category, client) {
 
     const backButton = createButton(
         BACK_BUTTON_ID,
-        "Back",
+        "رجوع",
         "primary",
         "⬅️",
         false,
@@ -307,8 +332,8 @@ export async function createAllCommandsMenu(page = 1, client) {
     const pageCommands = allCommands.slice(startIndex, endIndex);
 
     const embed = createEmbed({
-        title: "📋 All Commands",
-        description: `Browse every available command in one list. Use the page buttons below to move through the full set.`
+        title: "📋 جميع الأوامر",
+        description: `تصفح كل الأوامر المتاحة في قائمة واحدة. استخدم أزرار الصفحات بالأسفل للتنقل بين القائمة.`
     });
 
     embed.setFooter({ text: FOOTER_TEXT });
@@ -334,7 +359,7 @@ export async function createAllCommandsMenu(page = 1, client) {
             if (!chunk) continue;
 
             embed.addFields({
-                name: i === 0 ? `Commands (Page ${page})` : "Commands (cont.)",
+                name: i === 0 ? `الأوامر (صفحة ${page})` : "الأوامر (تابع)",
                 value: chunk,
                 inline: columnCount > 1,
             });
@@ -354,7 +379,7 @@ export async function createAllCommandsMenu(page = 1, client) {
 
     const backButton = createButton(
         BACK_BUTTON_ID,
-        "Back",
+        "رجوع",
         "primary",
         "⬅️",
         false,
