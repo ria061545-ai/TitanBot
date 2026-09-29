@@ -11,7 +11,7 @@ import levelDashboard from './modules/level_dashboard.js';
 export default {
     data: new SlashCommandBuilder()
         .setName('level')
-        .setDescription('Manage the leveling system')
+        .setDescription('إدارة نظام المستويات واللفلات')
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
         .setDMPermission(false)
         .addSubcommand((subcommand) =>
