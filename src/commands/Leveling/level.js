@@ -45,7 +45,7 @@ export default {
                     option
                         .setName('message')
                         .setDescription(
-                            'Level-up message. Use {user} and {level} as placeholders (default provided)',
+                            'رسالة الترقية. استخدم {user} و {level}',
                         )
                         .setMaxLength(500)
                         .setRequired(false),
@@ -53,7 +53,7 @@ export default {
                 .addIntegerOption((option) =>
                     option
                         .setName('xp_cooldown')
-                        .setDescription('Seconds between XP grants per user (default: 60)')
+                        .setDescription('الثواني بين كل كسب للخبرة لكل شخص (الافتراضي: 60)')
                         .setMinValue(0)
                         .setMaxValue(3600)
                         .setRequired(false),
@@ -62,7 +62,7 @@ export default {
         .addSubcommand((subcommand) =>
             subcommand
                 .setName('dashboard')
-                .setDescription('Open the interactive leveling configuration dashboard'),
+                .setDescription('فتح لوحة تحكم إعدادات المستويات التفاعلية'),
         ),
     category: 'Leveling',
 
