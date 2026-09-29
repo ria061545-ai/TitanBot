@@ -73,7 +73,7 @@ export default {
         if (!deferred) return;
 
         if (!interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)) {
-            return await replyUserError(interaction, { type: ErrorTypes.PERMISSION, message: 'You need the **Manage Server** permission to use this command.' });
+            return await replyUserError(interaction, { type: ErrorTypes.PERMISSION, message: 'تنعى الخدمة: تحتاج إلى صلاحية **إدارة السيرفر** (Manage Server) لاستخدام هذا الأمر.' });
         }
 
         const subcommand = interaction.options.getSubcommand();
@@ -88,25 +88,25 @@ export default {
             const xpMax = interaction.options.getInteger('xp_max') ?? 25;
             const message =
                 interaction.options.getString('message') ??
-                '{user} has leveled up to level {level}!';
+                'مبروك {user}! لقد ارتفعت إلى المستوى {level}! 🎉';
             const xpCooldown = interaction.options.getInteger('xp_cooldown') ?? 60;
 
             if (xpMin > xpMax) {
-                return await replyUserError(interaction, { type: ErrorTypes.VALIDATION, message: `Minimum XP (**${xpMin}**) cannot be greater than maximum XP (**${xpMax}**).` });
+                return await replyUserError(interaction, { type: ErrorTypes.VALIDATION, message: `الحد الأدنى للـ XP (**${xpMin}**) لا يمكن أن يكون أكبر من الحد الأقصى (**${xpMax}**).` });
             }
 
             if (!botHasPermission(channel, ['SendMessages', 'EmbedLinks'])) {
                 throw new TitanBotError(
                     'Bot missing permissions in the specified channel',
                     ErrorTypes.PERMISSION,
-                    `I need **SendMessages** and **EmbedLinks** permissions in ${channel} to send level-up notifications.`,
+                    `أحتاج إلى صلاحيات **إرسال الرسائل** و **تضمين الروابط** في القناة ${channel} لإرسال إشعارات الترقية.`,
                 );
             }
 
             const existingConfig = await getLevelingConfig(client, interaction.guildId);
 
             if (existingConfig.configured) {
-                return await replyUserError(interaction, { type: ErrorTypes.UNKNOWN, message: `The leveling system is already set up on this server (level-up notifications go to <#${existingConfig.levelUpChannel}>).\n\nUse \`/level dashboard\` to adjust any settings.` });
+                return await replyUserError(interaction, { type: ErrorTypes.UNKNOWN, message: `نظام المستويات مُعد مسبقاً في هذا السيرفر (تُرسل إشعارات الترقية إلى <#${existingConfig.levelUpChannel}>).\n\nاستخدم الأمر \`/level dashboard\` للتعديل على الإعدادات.` });
             }
 
             const newConfig = {
@@ -133,14 +133,14 @@ export default {
             return await InteractionHelper.safeEditReply(interaction, {
                 embeds: [
                     createEmbed({
-                        title: 'Leveling System Set Up',
+                        title: '✅ تم إعداد نظام المستويات',
                         description:
-                            `The leveling system is now **enabled** and ready to go.\n\n` +
-                            `**Level-up Channel:** ${channel}\n` +
-                            `**XP per Message:** ${xpMin} – ${xpMax}\n` +
-                            `**XP Cooldown:** ${xpCooldown}s\n` +
-                            `**Level-up Message:** \`${message}\`\n\n` +
-                            `Use \`/level dashboard\` to adjust any of these settings at any time.`,
+                            `نظام المستويات **مُفعّل** الآن وجاهز للاستخدام.\n\n` +
+                            `**قناة الترقية:** ${channel}\n` +
+                            `**الـ XP لكل رسالة:** ${xpMin} – ${xpMax}\n` +
+                            `**مهلة الكولداون:** ${xpCooldown} ثانية\n` +
+                            `**رسالة الترقية:** \`${message}\`\n\n` +
+                            `يمكنك استخدام \`/level dashboard\` لتعديل أي من هذه الإعدادات في أي وقت.`,
                         color: 'success',
                     }),
                 ],
